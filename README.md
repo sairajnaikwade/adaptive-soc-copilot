@@ -5,6 +5,26 @@ Adaptive SOC CoPilot is an enterprise-ready Security Operations Center (SOC) pla
 
 ---
 
+## 🚧 Project Status
+
+Current Sprint: Week 1 ✅ Completed
+
+Progress:
+- ✅ Week 1 – Foundation
+- ⏳ Week 2 – Authentication & RBAC
+- ⏳ Week 3 – Event Ingestion
+- ⏳ Week 4 – Feature Extraction
+- ⏳ Week 5 – AI Threat Detection
+- ⏳ Week 6 – Explainable AI (SHAP)
+- ⏳ Week 7 – Rule Engine
+- ⏳ Week 8 – Honeypot
+- ⏳ Week 9 – Dashboard
+- ⏳ Week 10 – Reports
+- ⏳ Week 11 – Continuous Learning
+- ⏳ Week 12 – Deployment & Documentation
+
+---
+
 ## 🏛️ System Architecture
 
 ```text
