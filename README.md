@@ -1,6 +1,13 @@
 # Adaptive SOC CoPilot 🛡️
 > **AI-Powered Security Operations Platform for Intelligent Threat Detection & Automated Response**
 
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109%2B-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 Adaptive SOC CoPilot is an enterprise-ready Security Operations Center (SOC) platform. It monitors user behavior, detects insider threats and compromised accounts using machine learning, explains all predictions via SHAP (Explainable AI), and executes automated response actions (such as triggering MFA or redirecting attackers to honeypots).
 
 ---
