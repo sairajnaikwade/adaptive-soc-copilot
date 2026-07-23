@@ -5,6 +5,66 @@ Adaptive SOC CoPilot is an enterprise-ready Security Operations Center (SOC) pla
 
 ---
 
+## 🏛️ System Architecture
+
+```text
+                    ┌─────────────────────────┐
+                    │   Data Sources           │
+                    │ (login logs, activity)   │
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  Event Ingestion API     │  ← single normalized
+                    │  (FastAPI + Pydantic)    │    event schema
+                    └───────────┬─────────────┘
+                     ┌──────────┴──────────┐
+                     ↓                     ↓
+         ┌───────────────────┐  ┌───────────────────────┐
+         │ Auth Monitoring   │  │ User Activity Monitor │
+         │ (login rate, geo) │  │ (downloads, privs)    │
+         └───────────┬───────┘  └───────────┬───────────┘
+                     └──────────┬───────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  Feature Extraction     │  ← sliding time windows
+                    │  & Aggregation Window   │    (1h, 24h, 7d)
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  ML Anomaly Detection   │  ← Isolation Forest
+                    │  (Score: -1.0 to 0.0)   │    (primary model)
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  SHAP Explanation       │  ← per-feature impact
+                    │  Engine                 │    (positive/negative)
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  Trust Score &          │  ← Trust = max(0, 100 - penalities)
+                    │  Confidence Engine      │    Confidence = f(anomaly_score, SHAP)
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  Rule Engine            │  ← Trust < 30 → High Risk
+                    │  (Risk Classification)  │    Trust < 60 → Medium Risk
+                    └───────────┬─────────────┘
+                                ↓
+                    ┌─────────────────────────┐
+                    │  Adaptive Response      │  ← Low: Monitor
+                    │  Engine                 │    Med: Alert + MFA
+                    └───────────┬─────────────┘    High: Block / Honeypot
+                                ↓
+                    ┌─────────────────────────┐
+                    │  SOC Copilot Dashboard  │  ← Threat Feed, SHAP Visuals,
+                    │  (React 19 + Redux)     │    Response Overrides
+                    └─────────────────────────┘
+```
+
+For the complete technical specification, normalized PostgreSQL schema, and mathematical definitions (Trust Score formulas, SHAP calculations), refer to [`SOC_CoPilot_System_Architecture.md`](file:///c:/Users/DELL5300%202IN%20-1/Desktop/adaptive-soc-copilot/SOC_CoPilot_System_Architecture.md).
+
+---
+
 ## 🏗️ Clean Architecture & Core Features
 
 - **Multi-Tenant Architecture**: Strict tenant isolation across all entities using PostgreSQL composite indexes.
@@ -27,7 +87,7 @@ Adaptive SOC CoPilot is an enterprise-ready Security Operations Center (SOC) pla
 
 ```bash
 # Clone repository
-git clone https://github.com/your-org/adaptive-soc-copilot.git
+git clone https://github.com/sairajnaikwade/adaptive-soc-copilot.git
 cd adaptive-soc-copilot
 
 # Launch PostgreSQL and FastAPI Backend
@@ -96,7 +156,7 @@ adaptive-soc-copilot/
 │   │   ├── repositories/     # Repository pattern data access layer
 │   │   ├── schemas/          # Pydantic v2 request/response schemas
 │   │   └── services/         # Business logic layer
-│   ├── tests/                # Pytest suite
+│   ├── tests/                # Pytest suite (100% passing)
 │   ├── Dockerfile
 │   └── requirements.txt
 ├── frontend/
@@ -107,8 +167,10 @@ adaptive-soc-copilot/
 │   │   ├── App.tsx
 │   │   └── index.css
 │   ├── package.json
+│   ├── package-lock.json
 │   └── vite.config.ts
 ├── docker-compose.yml
+├── SOC_CoPilot_System_Architecture.md
 └── README.md
 ```
 
